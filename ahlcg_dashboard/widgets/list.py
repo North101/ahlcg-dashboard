@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Optional, Protocol
 
 import badger2040
 from ahlcg_dashboard.util import Offset, Size
@@ -22,12 +22,12 @@ class ListWidget(Widget, SizedMixin):
       self,
       parent: WidgetMixin,
       size: Size,
-      offset: Offset,
       item_height: int,
       item_count: int,
       item_builder: ListItemBuilder,
       page_item_count: int,
       selected_index: int = 0,
+      offset: Optional[Offset] = None,
   ):
     super().__init__(parent, offset)
 
@@ -40,9 +40,9 @@ class ListWidget(Widget, SizedMixin):
     self.scrollbar = ScrollbarWidget(parent=self)
     self.children = [
         self.item_builder(
-          parent=self,
-          index=i,
-          selected=i == self.selected_child_index,
+            parent=self,
+            index=i,
+            selected=i == self.selected_child_index,
         )
         for i in range(self.page_start, self.page_stop)
     ]

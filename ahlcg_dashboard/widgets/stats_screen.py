@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from ahlcg_dashboard.data import Investigator
 from ahlcg_dashboard.util import Offset, Size
@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class StatsScreen(Widget, SizedMixin):
-  offsets = [
+  stat_offsets = [
       Offset(8, 38),
       Offset(80, 38),
       Offset(152, 38),
@@ -19,15 +19,15 @@ class StatsScreen(Widget, SizedMixin):
       Offset(152, 84),
   ]
 
-  def __init__(self, parent: WidgetMixin, size: Size, offset: Offset, investigator: Investigator):
-    super().__init__(parent, size, offset)
+  def __init__(self, parent: WidgetMixin, size: Size, investigator: Investigator, offset: Optional[Offset] = None):
+    super().__init__(parent, offset)
 
     self.size = size
     self.investigator = investigator
     self.stats = [
         StatWidget(
             parent=self,
-            offset=offset + self.offsets[index],
+            offset=self.stat_offsets[index],
             stat=index,
             value=value,
         )

@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import badger2040
 from ahlcg_dashboard.data import Faction, investigator_data
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class InvestigatorScreen(Widget, SizedMixin):
-  def __init__(self, parent: WidgetMixin, size: Size, offset: Offset):
+  def __init__(self, parent: WidgetMixin, size: Size, offset: Optional[Offset] = None):
     super().__init__(parent, offset)
 
     self.size = size
@@ -37,9 +37,9 @@ class InvestigatorScreen(Widget, SizedMixin):
   def item_builder(self, parent: ListWidget, index: int, selected: bool):
     return InvestigatorItemWidget(
         parent=parent,
-        offset=Offset(parent.item_height * index, 0),
         investigator=self.items[index],
         selected=selected,
+        offset=Offset(parent.item_height * index, 0),
     )
 
   def on_button(self, button: int):
@@ -57,7 +57,6 @@ class InvestigatorScreen(Widget, SizedMixin):
     self.list = ListWidget(
         parent=self,
         size=self.size,
-        offset=Offset(0, 0),
         item_count=len(self.items),
         item_height=40,
         item_builder=self.item_builder,

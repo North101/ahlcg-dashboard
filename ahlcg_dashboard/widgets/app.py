@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+from ahlcg_dashboard.util import Offset
+
 from .investigator_screen import InvestigatorScreen
 
 if TYPE_CHECKING:
@@ -13,9 +15,8 @@ class MyApp(App, SizedMixin):
     self.screen = InvestigatorScreen(
         parent=self,
         size=self.size,
-        offset=self.offset,
     )
-  
+
   def on_button(self, button: int):
     return self.screen.on_button(button)
 

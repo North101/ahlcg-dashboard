@@ -16,7 +16,7 @@ class ScrollbarWidget(Widget[ListWidget], SizedMixin):
   @property
   def current(self):
     return self.parent.page_index
-  
+
   @property
   def count(self):
     return self.parent.page_count
@@ -31,17 +31,17 @@ class ScrollbarWidget(Widget[ListWidget], SizedMixin):
     # draw box
     self.display.pen(14)
     self.display.line(
-      x=self.offset.x,
-      y=self.offset.y,
-      width=self.size.width,
-      height=self.size.height,
+        x=self.display_offset.x,
+        y=self.display_offset.y,
+        width=self.size.width,
+        height=self.size.height,
     )
-  
+
     # draw segment
     self.display.pen(15)
     self.display.rectangle(
-      x=self.offset.x,
-      y=self.offset.y + segment_y_offset,
-      width=self.size.width,
-      height=segment_height,
+        x=self.display_offset.x,
+        y=self.display_offset.y + segment_y_offset,
+        width=self.size.width,
+        height=segment_height,
     )

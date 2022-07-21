@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import badger2040
 from ahlcg_dashboard.data import Investigator
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class InvestigatorItemWidget(Widget[ListWidget]):
-  def __init__(self, parent: ListWidget, offset: Offset, investigator: Investigator, selected: bool):
+  def __init__(self, parent: ListWidget, investigator: Investigator, selected: bool, offset: Optional[Offset] = None):
     super().__init__(parent, offset)
 
     self.investigator = investigator
@@ -24,7 +24,6 @@ class InvestigatorItemWidget(Widget[ListWidget]):
       self.app.screen = StatsScreen(
           parent=self.app,
           size=self.app.size,
-          offset=self.app.offset,
           investigator=self.investigator
       )
       return True
@@ -34,16 +33,16 @@ class InvestigatorItemWidget(Widget[ListWidget]):
   def render(self):
     self.display.pen(15 if self.selected else 0)
     self.display.rectangle(
-      self.offset.x,
-      self.offset.y,
-      self.parent.size.width,
-      self.parent.item_height,
+        self.display_offset.x,
+        self.display_offset.y,
+        self.parent.size.width,
+        self.parent.item_height,
     )
     self.display.pen(0 if self.selected else 15)
 
     self.display.font('bitmap6')
     self.display.text(
         text=self.investigator.name,
-        x=self.offset.x,
+        x=self.display_offset.x,
         y=4,
     )

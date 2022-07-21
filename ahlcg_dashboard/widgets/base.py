@@ -10,6 +10,10 @@ class WidgetMixin:
   display: badger2040.Badger2040
   offset: Offset
 
+  @property
+  def display_offset(self):
+    return self.offset
+
   def on_button(self, button: int) -> bool:
     raise NotImplementedError()
 
@@ -21,17 +25,17 @@ T = TypeVar('T', bound=WidgetMixin)
 
 
 class Widget(WidgetMixin, Generic[T]):
-  def __init__(self, parent: T, offset: Offset):
+  def __init__(self, parent: T, offset: Optional[Offset]):
     self.parent = parent
-    self._offset = offset
+    self.offset = offset or Offset(0, 0)
 
   @property
   def app(self) -> 'App':
     return self.parent.app
 
   @property
-  def offset(self):
-    return self.parent.offset + self._offset
+  def display_offset(self):
+    return self.parent.display_offset + self.offset
 
   @property
   def display(self):
@@ -47,12 +51,12 @@ class App(WidgetMixin, SizedMixin):
       self,
       display=badger2040.Badger2040(),
       size=Size(width=badger2040.WIDTH, height=badger2040.HEIGHT),
-      offset=Offset(0, 0),
       clear_color: int = 15,
+      offset: Optional[Offset] = None,
   ):
     self.display = display
     self.size = size
-    self.offset = offset
+    self.offset = offset or Offset(0, 0)
     self.screen: Optional[WidgetMixin] = None
     self.buttons = ButtonHandler(self.on_button)
     self.clear_color = clear_color
@@ -60,7 +64,7 @@ class App(WidgetMixin, SizedMixin):
   @property
   def app(self):
     return self
-  
+
   def clear(self):
     self.display.pen(self.clear_color)
     self.display.clear()
