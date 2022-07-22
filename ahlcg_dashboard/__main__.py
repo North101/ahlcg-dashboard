@@ -14,7 +14,7 @@ def main():
 
   app = MyApp(display=display)
   while True:
-    app()
+    app.update()
 
 
 if __name__ == '__main__':

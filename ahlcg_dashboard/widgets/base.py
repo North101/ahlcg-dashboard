@@ -32,6 +32,14 @@ class Widget(WidgetMixin, Generic[T]):
   @property
   def app(self) -> 'App':
     return self.parent.app
+  
+  @property
+  def dirty(self):
+    return self.dirty
+  
+  @dirty.setter
+  def dirty(self, value: bool):
+    self.app.dirty = value
 
   @property
   def display_offset(self):
@@ -60,16 +68,26 @@ class App(WidgetMixin, SizedMixin):
     self.screen: Optional[WidgetMixin] = None
     self.buttons = ButtonHandler(self.on_button)
     self.clear_color = clear_color
+    self.dirty = True
 
   @property
   def app(self):
     return self
 
+  def on_button(self, button: int) -> bool:
+    result = super().on_button(button)
+    self.dirty = self.dirty or result
+    
+    return result
+
   def clear(self):
     self.display.pen(self.clear_color)
     self.display.clear()
 
-  def __call__(self):
+  def update(self):
+    if not self.dirty:
+      return
+
     self.clear()
     self.render()
     self.display.update()
