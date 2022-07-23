@@ -1,5 +1,3 @@
-from typing import Generic, Optional, TypeVar
-
 import badger2040
 from ahlcg_dashboard.buttons import ButtonHandler
 from ahlcg_dashboard.util import Offset, Size
@@ -15,28 +13,29 @@ class WidgetMixin:
     return self.offset
 
   def on_button(self, button: int) -> bool:
-    raise NotImplementedError()
+    return False
 
   def render(self):
-    raise NotImplementedError()
+    pass
 
 
-T = TypeVar('T', bound=WidgetMixin)
-
-
-class Widget(WidgetMixin, Generic[T]):
-  def __init__(self, parent: T, offset: Optional[Offset]):
+class Widget(WidgetMixin):
+  def __init__(self, parent: WidgetMixin, offset: Offset = None):
     self.parent = parent
     self.offset = offset or Offset(0, 0)
 
   @property
   def app(self) -> 'App':
     return self.parent.app
-  
+
+  @property
+  def buttons(self):
+    return self.app.buttons
+
   @property
   def dirty(self):
     return self.dirty
-  
+
   @dirty.setter
   def dirty(self, value: bool):
     self.app.dirty = value
@@ -57,16 +56,16 @@ class SizedMixin:
 class App(WidgetMixin, SizedMixin):
   def __init__(
       self,
-      display=badger2040.Badger2040(),
+      display: badger2040.Badger2040,
       size=Size(width=badger2040.WIDTH, height=badger2040.HEIGHT),
       clear_color: int = 15,
-      offset: Optional[Offset] = None,
+      offset: Offset = None,
   ):
     self.display = display
     self.size = size
     self.offset = offset or Offset(0, 0)
-    self.screen: Optional[WidgetMixin] = None
-    self.buttons = ButtonHandler(self.on_button)
+    self.screen: WidgetMixin = None
+    self.buttons = ButtonHandler()
     self.clear_color = clear_color
     self.dirty = True
 
@@ -74,10 +73,10 @@ class App(WidgetMixin, SizedMixin):
   def app(self):
     return self
 
-  def on_button(self, button: int) -> bool:
-    result = super().on_button(button)
+  def test_button(self, button: int) -> bool:
+    result = self.on_button(button)
     self.dirty = self.dirty or result
-    
+
     return result
 
   def clear(self):
@@ -85,9 +84,15 @@ class App(WidgetMixin, SizedMixin):
     self.display.clear()
 
   def update(self):
+    if self.buttons.pressed:
+      self.test_button(self.buttons.pressed)
+      self.buttons.pressed = None
+
     if not self.dirty:
       return
 
     self.clear()
     self.render()
     self.display.update()
+    self.dirty = False
+    self.display.halt()

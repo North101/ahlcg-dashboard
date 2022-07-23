@@ -1,10 +1,8 @@
-from typing import Protocol
-
 import badger2040
 from machine import Pin
 
 
-class ButtonCallback(Protocol):
+class ButtonCallback:
   def __call__(self, pin: int):
     pass
 
@@ -20,6 +18,13 @@ class Button:
   def value(self):
     return self.pin.value()
 
+  def __eq__(self, other):
+    if isinstance(other, Button):
+      return self == other
+    elif isinstance(other, Pin):
+      return self.pin == other
+    return False
+
 
 class ButtonHandler:
   buttons = {
@@ -31,9 +36,13 @@ class ButtonHandler:
       badger2040.BUTTON_USER: Button(badger2040.BUTTON_USER),
   }
 
-  def __init__(self, on_button: ButtonCallback):
+  def __init__(self):
+    self.pressed = None
     for button in self.buttons.values():
-      button.irq(on_button)
+      button.irq(self.handler)
+
+  def handler(self, pin: int):
+    self.pressed = pin
 
   def __getitem__(self, pin: int):
     return self.buttons[pin]

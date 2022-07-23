@@ -1,17 +1,13 @@
-from typing import TYPE_CHECKING
-
 from ahlcg_dashboard.util import Offset, Size
 
-if TYPE_CHECKING:
-  from .base import Widget, SizedMixin
-  from .list import ListWidget
+from .base import SizedMixin, Widget
 
 
-class ScrollbarWidget(Widget[ListWidget], SizedMixin):
-  def __init__(self, parent: ListWidget, width: int = 30):
-    super().__init__(parent, Offset(parent.size.width - width, 0))
+class ScrollbarWidget(Widget, SizedMixin):
+  def __init__(self, parent: 'ListWidget', size: Size, offset: Offset = None):
+    super().__init__(parent, offset)
 
-    self.size = Size(width, parent.size.height)
+    self.size = size
 
   @property
   def current(self):
@@ -25,23 +21,46 @@ class ScrollbarWidget(Widget[ListWidget], SizedMixin):
     super().render()
 
     height = self.size.height
-    segment_height = height // self.count
-    segment_y_offset = segment_height * self.current
 
     # draw box
-    self.display.pen(14)
+    start_x = self.display_offset.x
+    start_y = self.display_offset.y
+    stop_x = self.display_offset.x + self.size.width - 1
+    stop_y = self.display_offset.y + height
+    self.display.pen(0)
+    # top
     self.display.line(
-        x=self.display_offset.x,
-        y=self.display_offset.y,
-        width=self.size.width,
-        height=self.size.height,
+        start_x,
+        start_y,
+        stop_x,
+        start_y,
+    )
+    # left
+    self.display.line(
+        start_x,
+        start_y,
+        start_x,
+        stop_y,
+    )
+    self.display.line(
+        start_x,
+        stop_y,
+        stop_x,
+        stop_y,
+    )
+    self.display.line(
+        stop_x,
+        start_y,
+        stop_x,
+        stop_y,
     )
 
     # draw segment
-    self.display.pen(15)
+    segment_height = height // self.count
+    segment_y_offset = segment_height * self.current
     self.display.rectangle(
-        x=self.display_offset.x,
-        y=self.display_offset.y + segment_y_offset,
-        width=self.size.width,
-        height=segment_height,
+        self.display_offset.x,
+        self.display_offset.y + segment_y_offset,
+        self.size.width,
+        segment_height,
     )

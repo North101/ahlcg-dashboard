@@ -1,16 +1,12 @@
-from typing import TYPE_CHECKING, Optional, Protocol
-
 import badger2040
 from ahlcg_dashboard.util import Offset, Size
 
+from .base import SizedMixin, Widget, WidgetMixin
 from .scrollbar import ScrollbarWidget
 
-if TYPE_CHECKING:
-  from .base import SizedMixin, Widget, WidgetMixin
 
-
-class ListItemBuilder(Protocol):
-  def __call__(self, parent: 'ListWidget', index: int, selected: bool) -> WidgetMixin:
+class ListItemBuilder:
+  def __call__(self, parent: 'ListWidget', index: int, selected: bool, size: Size, offset: Offset) -> WidgetMixin:
     pass
 
 
@@ -27,7 +23,7 @@ class ListWidget(Widget, SizedMixin):
       item_builder: ListItemBuilder,
       page_item_count: int,
       selected_index: int = 0,
-      offset: Optional[Offset] = None,
+      offset: Offset = None,
   ):
     super().__init__(parent, offset)
 
@@ -37,15 +33,11 @@ class ListWidget(Widget, SizedMixin):
     self.item_builder = item_builder
     self.selected_index = selected_index
     self.page_item_count = page_item_count
-    self.scrollbar = ScrollbarWidget(parent=self)
-    self.children = [
-        self.item_builder(
-            parent=self,
-            index=i,
-            selected=i == self.selected_child_index,
-        )
-        for i in range(self.page_start, self.page_stop)
-    ]
+    self.scrollbar = ScrollbarWidget(
+        parent=self,
+        size=Size(6, self.size.height),
+        offset=Offset(self.size.width - 6, 0),
+    )
 
   @property
   def page_index(self):
@@ -69,21 +61,35 @@ class ListWidget(Widget, SizedMixin):
 
   @property
   def selected_child(self):
-    return self.children[self.selected_child_index]
+    i = self.selected_child_index
+    return self.item_builder(
+        parent=self,
+        index=i,
+        selected=True,
+        size=Size(self.size.width - self.scrollbar.size.width, self.item_height),
+        offset=Offset(0, self.item_height * (i % self.page_item_count)),
+    )
 
   def on_button(self, button: int):
-    if button == badger2040.BUTTON_UP:
-      self.selected_index = max(self.selected_index - 1, 0)
+    if button == self.buttons[badger2040.BUTTON_UP]:
+      self.selected_index = (self.selected_index - 1) % self.item_count
       return True
-    elif button == badger2040.BUTTON_DOWN:
-      self.selected_index = min(self.selected_index + 1, self.item_count)
+    elif button == self.buttons[badger2040.BUTTON_DOWN]:
+      self.selected_index = (self.selected_index + 1) % self.item_count
       return True
 
-    return self.selected_child.on_button(button)
+    return super().on_button(button)
 
   def render(self):
     super().render()
 
-    for child in self.children:
+    for i in range(self.page_start, min(self.page_stop, self.item_count)):
+      child = self.item_builder(
+          parent=self,
+          index=i,
+          selected=(i == self.selected_index),
+          size=Size(self.size.width - self.scrollbar.size.width, self.item_height),
+          offset=Offset(0, self.item_height * (i % self.page_item_count)),
+      )
       child.render()
     self.scrollbar.render()

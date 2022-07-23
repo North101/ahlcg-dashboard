@@ -1,13 +1,10 @@
-from typing import TYPE_CHECKING, Optional
-
 from ahlcg_dashboard.util import Offset, Size
 
-if TYPE_CHECKING:
-  from .base import Widget, WidgetMixin, SizedMixin
+from .base import SizedMixin, Widget, WidgetMixin
 
 
 class ImageWidget(Widget, SizedMixin):
-  def __init__(self, parent: WidgetMixin, size: Size, path: str, offset: Optional[Offset] = None):
+  def __init__(self, parent: WidgetMixin, size: Size, path: str, offset: Offset = None):
     super().__init__(parent, offset)
 
     self.size = size

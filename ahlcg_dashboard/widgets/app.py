@@ -1,16 +1,19 @@
-from typing import TYPE_CHECKING
+import badger2040
+from ahlcg_dashboard.util import Offset, Size
 
-from ahlcg_dashboard.util import Offset
-
+from .base import App, SizedMixin
 from .investigator_screen import InvestigatorScreen
-
-if TYPE_CHECKING:
-  from .base import App, SizedMixin
 
 
 class MyApp(App, SizedMixin):
-  def __init__(self, **kwargs):
-    super().__init__(self, **kwargs)
+  def __init__(
+      self,
+      display: badger2040.Badger2040,
+      size=Size(width=badger2040.WIDTH, height=badger2040.HEIGHT),
+      clear_color: int = 15,
+      offset: Offset = None,
+  ):
+    super().__init__(display=display, size=size, clear_color=clear_color, offset=offset)
 
     self.screen = InvestigatorScreen(
         parent=self,
@@ -21,6 +24,4 @@ class MyApp(App, SizedMixin):
     return self.screen.on_button(button)
 
   def render(self):
-    super().render()
-
     self.screen.render()

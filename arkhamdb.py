@@ -1,7 +1,6 @@
 import requests
 
-from ahlcg_dashboard.data import (Faction, Investigator, InvestigatorData,
-                                  Stats)
+from ahlcg_dashboard.data import Faction, Investigator, InvestigatorData, Stats
 
 r = requests.get('https://arkhamdb.com/api/public/cards/')
 data = list[Investigator]()
@@ -14,7 +13,7 @@ for item in r.json():
     name = f'(P) {name}'
   investigator = Investigator(
       name,
-      Faction[item['faction_name']],
+      Faction.values.index(item['faction_name']),
       stats=Stats(
           item['skill_willpower'],
           item['skill_intellect'],
