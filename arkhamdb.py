@@ -1,6 +1,6 @@
 import requests
 
-from ahlcg_dashboard.data import Faction, Investigator, InvestigatorData, Stats
+from ahlcg2040.data import Faction, Investigator, InvestigatorData, Stats
 
 r = requests.get('https://arkhamdb.com/api/public/cards/')
 data = list[Investigator]()

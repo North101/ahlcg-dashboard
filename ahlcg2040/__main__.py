@@ -1,8 +1,8 @@
 import badger2040
 
-from ahlcg_dashboard.data import (faction_icons, investigator_data,
-                                  number_icons, stat_icons)
-from ahlcg_dashboard.widgets.app import MyApp
+from ahlcg2040.data import (faction_icons, investigator_data, number_icons,
+                            stat_icons)
+from ahlcg2040.widgets.app import MyApp
 
 
 def main():

@@ -1,11 +1,11 @@
 import badger2040
-from ahlcg_dashboard.util import Offset, Size
+from badger_ui.base import App
+from badger_ui.util import Offset, Size
 
-from .base import App, SizedMixin
 from .investigator_screen import InvestigatorScreen
 
 
-class MyApp(App, SizedMixin):
+class MyApp(App):
   def __init__(
       self,
       display: badger2040.Badger2040,

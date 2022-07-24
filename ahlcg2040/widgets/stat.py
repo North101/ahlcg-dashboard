@@ -1,12 +1,11 @@
-from ahlcg_dashboard.data import number_icons, stat_icons
-from ahlcg_dashboard.util import Offset
-
-from .base import Widget, WidgetMixin
+from ahlcg2040.data import number_icons, stat_icons
+from badger_ui.base import Widget, WidgetMixin
+from badger_ui.util import Offset, Size
 
 
 class StatWidget(Widget):
-  def __init__(self, parent: WidgetMixin, stat: int, value: int, selected: bool, offset: Offset = None):
-    super().__init__(parent, offset)
+  def __init__(self, parent: WidgetMixin, size: Size, stat: int, value: int, selected: bool, offset: Offset = None):
+    super().__init__(parent, size, offset)
 
     self.value = value
     self.stat = stat

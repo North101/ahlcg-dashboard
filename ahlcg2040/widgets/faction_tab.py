@@ -1,15 +1,13 @@
 import badger2040
-from ahlcg_dashboard.data import Faction, faction_icons
-from ahlcg_dashboard.util import Offset, Size
+from ahlcg2040.data import Faction, faction_icons
+from badger_ui.base import Widget, WidgetMixin
+from badger_ui.util import Offset, Size
 
-from .base import SizedMixin, Widget, WidgetMixin
 
-
-class FactionTab(Widget, SizedMixin):
+class FactionTab(Widget):
   def __init__(self, parent: WidgetMixin, size: Size, offset: Offset = None):
-    super().__init__(parent, offset)
+    super().__init__(parent, size, offset)
 
-    self.size = size
     self.icons = faction_icons
     self.selected_index = 0
 

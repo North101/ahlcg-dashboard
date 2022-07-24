@@ -1,12 +1,12 @@
 import badger2040
-from ahlcg_dashboard.data import Investigator, Stats
-from ahlcg_dashboard.util import Offset, Size
+from ahlcg2040.data import Investigator, Stats
+from badger_ui.base import Widget, WidgetMixin
+from badger_ui.util import Offset, Size
 
-from .base import SizedMixin, Widget, WidgetMixin
 from .stat import StatWidget
 
 
-class StatsScreen(Widget, SizedMixin):
+class StatsScreen(Widget):
   stat_offsets = [
       Offset(8, 38),
       Offset(80, 38),
@@ -17,9 +17,8 @@ class StatsScreen(Widget, SizedMixin):
   ]
 
   def __init__(self, parent: WidgetMixin, size: Size, investigator: Investigator, offset: Offset = None):
-    super().__init__(parent, offset)
+    super().__init__(parent, size, offset)
 
-    self.size = size
     self.investigator = investigator
     self.selected_index = 0
 
@@ -76,6 +75,7 @@ class StatsScreen(Widget, SizedMixin):
     for index, value in enumerate(self.investigator.stats):
       StatWidget(
           parent=self,
+          size=Size(64, 32),
           offset=self.stat_offsets[index],
           stat=index,
           selected=index == self.selected_index,

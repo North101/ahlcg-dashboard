@@ -1,17 +1,17 @@
 import badger2040
-from ahlcg_dashboard.data import investigator_data
-from ahlcg_dashboard.util import Offset, Size
+from ahlcg2040.data import investigator_data
+from badger_ui.base import App, Widget
+from badger_ui.list import ListWidget
+from badger_ui.util import Offset, Size
 
-from .base import App, SizedMixin, Widget
 from .faction_tab import FactionTab
 from .investigator_item import InvestigatorItemWidget
-from .list import ListWidget
 from .stats_screen import StatsScreen
 
 
-class InvestigatorScreen(Widget, SizedMixin):
+class InvestigatorScreen(Widget):
   def __init__(self, parent: App, size: Size, offset: Offset = None):
-    super().__init__(parent, offset)
+    super().__init__(parent, size, offset)
 
     self.size = size
     self.page_item_count = 5

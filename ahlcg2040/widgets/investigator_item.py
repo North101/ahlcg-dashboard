@@ -1,18 +1,15 @@
-import badger2040
-from ahlcg_dashboard.data import Investigator
-from ahlcg_dashboard.util import Offset, Size
-
-from .base import SizedMixin, Widget
-from .list import ListWidget
+from ahlcg2040.data import Investigator
+from badger_ui.base import Widget
+from badger_ui.list import ListWidget
+from badger_ui.util import Offset, Size
 
 
-class InvestigatorItemWidget(Widget, SizedMixin):
+class InvestigatorItemWidget(Widget):
   parent: ListWidget
 
   def __init__(self, parent: ListWidget, investigator: Investigator, selected: bool, size: Size, offset: Offset = None):
-    super().__init__(parent, offset)
+    super().__init__(parent, size, offset)
 
-    self.size = size
     self.investigator = investigator
     self.selected = selected
 
