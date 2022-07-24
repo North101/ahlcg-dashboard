@@ -18,6 +18,7 @@ class InvestigatorScreen(Widget, SizedMixin):
     self.faction_tab = FactionTab(
         parent=self,
         size=Size(self.size.width, 24),
+        offset=Offset(0, 21 * 5)
     )
     self.create_list()
 
@@ -30,7 +31,6 @@ class InvestigatorScreen(Widget, SizedMixin):
         item_height=21,
         item_builder=self.item_builder,
         page_item_count=self.page_item_count,
-        offset=Offset(0, 24),
     )
 
   def faction_items(self):
@@ -47,12 +47,12 @@ class InvestigatorScreen(Widget, SizedMixin):
         offset=offset,
     )
 
-  def on_button(self, button: int):
-    if self.faction_tab.on_button(button):
+  def on_button(self, pressed: dict[int, bool]):
+    if self.faction_tab.on_button(pressed):
       self.create_list()
       return True
 
-    elif button == self.buttons[badger2040.BUTTON_B]:
+    elif pressed[badger2040.BUTTON_B]:
       self.app.screen = StatsScreen(
           parent=self.app,
           size=self.app.size,
@@ -60,7 +60,7 @@ class InvestigatorScreen(Widget, SizedMixin):
       )
       return True
 
-    return self.list.on_button(button) or super().on_button(button)
+    return self.list.on_button(pressed) or super().on_button(pressed)
 
   def render(self):
     super().render()

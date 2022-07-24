@@ -70,15 +70,15 @@ class ListWidget(Widget, SizedMixin):
         offset=Offset(0, self.item_height * (i % self.page_item_count)),
     )
 
-  def on_button(self, button: int):
-    if button == self.buttons[badger2040.BUTTON_UP]:
+  def on_button(self, pressed: dict[int, bool]):
+    if pressed[badger2040.BUTTON_UP]:
       self.selected_index = (self.selected_index - 1) % self.item_count
       return True
-    elif button == self.buttons[badger2040.BUTTON_DOWN]:
+    elif pressed[badger2040.BUTTON_DOWN]:
       self.selected_index = (self.selected_index + 1) % self.item_count
       return True
 
-    return super().on_button(button)
+    return super().on_button(pressed)
 
   def render(self):
     super().render()

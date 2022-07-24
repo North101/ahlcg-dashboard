@@ -12,7 +12,7 @@ class WidgetMixin:
   def display_offset(self):
     return self.offset
 
-  def on_button(self, button: int) -> bool:
+  def on_button(self, pressed: dict[int, bool]) -> bool:
     return False
 
   def render(self):
@@ -73,8 +73,8 @@ class App(WidgetMixin, SizedMixin):
   def app(self):
     return self
 
-  def test_button(self, button: int) -> bool:
-    result = self.on_button(button)
+  def test_button(self) -> bool:
+    result = self.on_button(self.buttons.pressed())
     self.dirty = self.dirty or result
 
     return result
@@ -84,15 +84,16 @@ class App(WidgetMixin, SizedMixin):
     self.display.clear()
 
   def update(self):
-    if self.buttons.pressed:
-      self.test_button(self.buttons.pressed)
-      self.buttons.pressed = None
+    if self.buttons.dirty:
+      self.test_button()
+      self.buttons.dirty = False
 
     if not self.dirty:
       return
 
     self.clear()
     self.render()
-    self.display.update()
+    for _ in range(2):
+      self.display.update()
     self.dirty = False
     self.display.halt()

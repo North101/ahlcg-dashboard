@@ -20,8 +20,8 @@ class MyApp(App, SizedMixin):
         size=self.size,
     )
 
-  def on_button(self, button: int):
-    return self.screen.on_button(button)
+  def on_button(self, pressed: dict[int, bool]):
+    return self.screen.on_button(pressed)
 
   def render(self):
     self.screen.render()

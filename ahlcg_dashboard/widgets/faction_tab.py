@@ -13,15 +13,15 @@ class FactionTab(Widget, SizedMixin):
     self.icons = faction_icons
     self.selected_index = 0
 
-  def on_button(self, button: int):
-    if button == self.buttons[badger2040.BUTTON_A]:
+  def on_button(self, pressed: dict[int, bool]):
+    if pressed[badger2040.BUTTON_A]:
       self.selected_index = (self.selected_index - 1) % len(Faction.values)
       return True
-    elif button == self.buttons[badger2040.BUTTON_C]:
+    elif pressed[badger2040.BUTTON_C]:
       self.selected_index = (self.selected_index + 1) % len(Faction.values)
       return True
 
-    return super().on_button(button)
+    return super().on_button(pressed)
 
   def render(self):
     super().render()

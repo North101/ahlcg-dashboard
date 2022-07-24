@@ -23,25 +23,25 @@ class StatsScreen(Widget, SizedMixin):
     self.investigator = investigator
     self.selected_index = 0
 
-  def on_button(self, button: int) -> bool:
+  def on_button(self, pressed: dict[int, bool]) -> bool:
     from .investigator_screen import InvestigatorScreen
 
-    if button == self.buttons[badger2040.BUTTON_A]:
+    if pressed[badger2040.BUTTON_A]:
       self.selected_index = (self.selected_index - 1) % len(self.investigator.stats)
       return True
 
-    elif button == self.buttons[badger2040.BUTTON_B]:
+    elif pressed[badger2040.BUTTON_B]:
       self.app.screen = InvestigatorScreen(
           parent=self.app,
           size=self.app.size,
       )
       return True
 
-    elif button == self.buttons[badger2040.BUTTON_C]:
+    elif pressed[badger2040.BUTTON_C]:
       self.selected_index = (self.selected_index + 1) % len(self.investigator.stats)
       return True
 
-    elif button == self.buttons[badger2040.BUTTON_UP]:
+    elif pressed[badger2040.BUTTON_UP]:
       self.investigator = Investigator(
           name=self.investigator.name,
           faction=self.investigator.faction,
@@ -52,7 +52,7 @@ class StatsScreen(Widget, SizedMixin):
       )
       return True
 
-    elif button == self.buttons[badger2040.BUTTON_DOWN]:
+    elif pressed[badger2040.BUTTON_DOWN]:
       self.investigator = Investigator(
           name=self.investigator.name,
           faction=self.investigator.faction,
@@ -63,7 +63,7 @@ class StatsScreen(Widget, SizedMixin):
       )
       return True
 
-    return super().on_button(button)
+    return super().on_button(pressed)
 
   def render(self):
     self.display.pen(0)

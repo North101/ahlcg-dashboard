@@ -1,3 +1,5 @@
+import time
+
 import badger2040
 from machine import Pin
 
@@ -8,22 +10,54 @@ class ButtonCallback:
 
 
 class Button:
-  def __init__(self, id: int, invert: bool = True):
-    self.id = id
-    self.pin = Pin(id, Pin.IN, Pin.PULL_UP if invert else Pin.PULL_DOWN)
+    def __init__(self, button, invert=True, repeat_time=200, hold_time=1000):
+        self.invert = invert
+        self.repeat_time = repeat_time
+        self.hold_time = hold_time
+        self.pin = Pin(button, pull=Pin.PULL_UP if invert else Pin.PULL_DOWN)
+        self.last_state = False
+        self.pressed = False
+        self.pressed_time = 0
 
-  def irq(self, handler: ButtonCallback):
-    self.pin.irq(trigger=Pin.IRQ_RISING, handler=handler)
+    def read(self):
+        current_time = time.ticks_ms()
+        state = self.raw()
+        changed = state != self.last_state
+        self.last_state = state
 
-  def value(self):
-    return self.pin.value()
+        if changed:
+            if state:
+                self.pressed_time = current_time
+                self.pressed = True
+                self.last_time = current_time
+                return True
+            else:
+                self.pressed_time = 0
+                self.pressed = False
+                self.last_time = 0
 
-  def __eq__(self, other):
-    if isinstance(other, Button):
-      return self == other
-    elif isinstance(other, Pin):
-      return self.pin == other
-    return False
+        if self.repeat_time == 0:
+            return False
+
+        if self.pressed:
+            repeat_rate = self.repeat_time
+            if self.hold_time > 0 and current_time - self.pressed_time > self.hold_time:
+                repeat_rate /= 3
+            if current_time - self.last_time > repeat_rate:
+                self.last_time = current_time
+                return True
+
+        return False
+
+    def raw(self):
+        if self.invert:
+            return not self.pin.value()
+        else:
+            return self.pin.value()
+
+    @property
+    def is_pressed(self):
+        return self.raw()
 
 
 class ButtonHandler:
@@ -37,12 +71,19 @@ class ButtonHandler:
   }
 
   def __init__(self):
-    self.pressed = None
+    self.dirty = False
     for button in self.buttons.values():
-      button.irq(self.handler)
+      button.pin.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING, handler=self.handler)
 
   def handler(self, pin: int):
-    self.pressed = pin
+    self.dirty = True
+  
+  def pressed(self):
+    return {
+      pin: button.read()
+      for pin, button in self.buttons.items()
+    }
+
 
   def __getitem__(self, pin: int):
     return self.buttons[pin]
