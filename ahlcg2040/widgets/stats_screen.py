@@ -1,6 +1,6 @@
 import badger2040
 from ahlcg2040.data import Investigator, Stats
-from badger_ui.base import Widget, WidgetMixin
+from badger_ui.base import App, Widget
 from badger_ui.util import Offset, Size
 
 from .stat import StatWidget
@@ -16,13 +16,11 @@ class StatsScreen(Widget):
       Offset(152, 84),
   ]
 
-  def __init__(self, parent: WidgetMixin, size: Size, investigator: Investigator, offset: Offset = None):
-    super().__init__(parent, size, offset)
-
+  def __init__(self, investigator: Investigator):
     self.investigator = investigator
     self.selected_index = 0
 
-  def on_button(self, pressed: dict[int, bool]) -> bool:
+  def on_button(self, app: App, pressed: dict[int, bool]) -> bool:
     from .investigator_screen import InvestigatorScreen
 
     if pressed[badger2040.BUTTON_A]:
@@ -30,10 +28,7 @@ class StatsScreen(Widget):
       return True
 
     elif pressed[badger2040.BUTTON_B]:
-      self.app.screen = InvestigatorScreen(
-          parent=self.app,
-          size=self.app.size,
-      )
+      app.child = InvestigatorScreen()
       return True
 
     elif pressed[badger2040.BUTTON_C]:
@@ -62,22 +57,19 @@ class StatsScreen(Widget):
       )
       return True
 
-    return super().on_button(pressed)
+    return super().on_button(app, pressed)
 
-  def render(self):
-    self.display.pen(0)
-    self.display.text(
+  def render(self, app: App, size: Size, offset: Offset):
+    app.display.pen(0)
+    app.display.text(
         self.investigator.name,
-        self.display_offset.x + ((self.size.width - self.display.measure_text(self.investigator.name, 0.8)) // 2),
-        self.display_offset.y + (20 // 2),
+        offset.x + ((size.width - app.display.measure_text(self.investigator.name, 0.8)) // 2),
+        offset.y + (20 // 2),
         0.8,
     )
     for index, value in enumerate(self.investigator.stats):
       StatWidget(
-          parent=self,
-          size=Size(64, 32),
-          offset=self.stat_offsets[index],
           stat=index,
           selected=index == self.selected_index,
           value=value,
-      ).render()
+      ).render(app, size, offset + self.stat_offsets[index])
