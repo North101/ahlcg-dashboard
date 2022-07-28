@@ -9,7 +9,7 @@ class StatWidget(Widget):
     self.stat = stat
     self.selected = selected
 
-  def render(self, app: App, size: Size, offset: Offset):
+  def __call__(self, app: App, size: Size, offset: Offset):
     number_icons.icon(
         display=app.display,
         icon_index=self.value,
