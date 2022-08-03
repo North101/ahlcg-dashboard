@@ -48,6 +48,6 @@ class InvestigatorScreen(Widget):
 
     return self.list.on_button(app, pressed) or super().on_button(app, pressed)
 
-  def __call__(self, app: App, size: Size, offset: Offset):
-    self.faction_tab(app, Size(size.width, 24), Offset(0, self.list.item_height * 5))
-    self.list(app, size, offset)
+  def render(self, app: App, size: Size, offset: Offset):
+    self.faction_tab.render(app, Size(size.width, 24), Offset(0, self.list.item_height * 5))
+    self.list.render(app, size, offset)

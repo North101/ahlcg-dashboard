@@ -11,7 +11,7 @@ class InvestigatorItemWidget(Widget):
     self.investigator = investigator
     self.selected = selected
 
-  def __call__(self, app: App, size: Size, offset: Offset):
+  def render(self, app: App, size: Size, offset: Offset):
     app.display.pen(0)
     if self.selected:
       app.display.rectangle(

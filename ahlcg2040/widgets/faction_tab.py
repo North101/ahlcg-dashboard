@@ -19,7 +19,7 @@ class FactionTab(Widget):
 
     return super().on_button(app, pressed)
 
-  def __call__(self, app: App, size: Size, offset: Offset):
+  def render(self, app: App, size: Size, offset: Offset):
     count = self.icons.count // 2
     offset = offset + Offset((size.width - (self.icons.size * count)) // 2, 0)
     for i in range(count):

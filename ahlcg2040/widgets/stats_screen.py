@@ -59,7 +59,7 @@ class StatsScreen(Widget):
 
     return super().on_button(app, pressed)
 
-  def __call__(self, app: App, size: Size, offset: Offset):
+  def render(self, app: App, size: Size, offset: Offset):
     app.display.pen(0)
     app.display.text(
         self.investigator.name,
@@ -72,4 +72,4 @@ class StatsScreen(Widget):
           stat=index,
           selected=index == self.selected_index,
           value=value,
-      )(app, size, offset + self.stat_offsets[index])
+      ).render(app, size, offset + self.stat_offsets[index])
