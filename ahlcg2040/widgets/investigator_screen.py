@@ -1,8 +1,7 @@
 import badger2040
 from ahlcg2040.data import investigator_data
-from badger_ui.base import App, Widget
+from badger_ui import App, Offset, Size, Widget
 from badger_ui.list import ListWidget
-from badger_ui.util import Offset, Size
 
 from .faction_tab import FactionTab
 from .investigator_item import InvestigatorItemWidget

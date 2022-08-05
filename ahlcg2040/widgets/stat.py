@@ -1,6 +1,5 @@
 from ahlcg2040.data import number_icons, stat_icons
-from badger_ui.base import App, Widget
-from badger_ui.util import Offset, Size
+from badger_ui import App, Offset, Size, Widget
 
 
 class StatWidget(Widget):

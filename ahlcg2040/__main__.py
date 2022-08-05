@@ -1,3 +1,3 @@
-import ahlcg
+import ahlcg2040
 
-ahlcg.start()
+ahlcg2040.start()

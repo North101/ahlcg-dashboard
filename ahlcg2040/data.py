@@ -92,22 +92,6 @@ class InvestigatorData:
 
 investigator_data = InvestigatorData()
 
-
-class NumberIconSheet(IconSheet):
-  def __init__(self):
-    super().__init__('ahlcg2040/assets/number_icons.bin', 32, 10)
-
-
-class StatIconSheet(IconSheet):
-  def __init__(self):
-    super().__init__('ahlcg2040/assets/stat_icons.bin', 32, 6)
-
-
-class FactionIconSheet(IconSheet):
-  def __init__(self):
-    super().__init__('ahlcg2040/assets/faction_icons.bin', 24, 6 * 2)
-
-
-number_icons = NumberIconSheet()
-stat_icons = StatIconSheet()
-faction_icons = FactionIconSheet()
+number_icons = IconSheet('ahlcg2040/assets/number_icons.bin', 32, 10)
+stat_icons = IconSheet('ahlcg2040/assets/stat_icons.bin', 32, 6)
+faction_icons = IconSheet('ahlcg2040/assets/faction_icons.bin', 24, 6 * 2)

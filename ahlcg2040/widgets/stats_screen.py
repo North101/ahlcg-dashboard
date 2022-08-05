@@ -1,7 +1,6 @@
 import badger2040
 from ahlcg2040.data import Investigator, Stats
-from badger_ui.base import App, Widget
-from badger_ui.util import Offset, Size
+from badger_ui import App, Offset, Size, Widget
 
 from .stat import StatWidget
 
