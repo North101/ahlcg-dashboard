@@ -3,6 +3,8 @@ from collections import namedtuple
 
 from badger_ui.util import IconSheet
 
+import ahlcg2040
+
 
 class Faction:
   values = [
@@ -45,7 +47,7 @@ class InvestigatorData:
   fmt = '24sBBBBBBB'
 
   def __init__(self, data=None):
-    self.path = 'ahlcg2040/assets/investigator.bin'
+    self.path = f'{ahlcg2040.assets_dir}/investigator.bin'
     self.data = data
 
   def write(self):
@@ -92,6 +94,6 @@ class InvestigatorData:
 
 investigator_data = InvestigatorData()
 
-number_icons = IconSheet('ahlcg2040/assets/number_icons.bin', 32, 10)
-stat_icons = IconSheet('ahlcg2040/assets/stat_icons.bin', 32, 6)
-faction_icons = IconSheet('ahlcg2040/assets/faction_icons.bin', 24, 6 * 2)
+number_icons = IconSheet(f'{ahlcg2040.assets_dir}/number_icons.bin', 32, 10)
+stat_icons = IconSheet(f'{ahlcg2040.assets_dir}/stat_icons.bin', 32, 6)
+faction_icons = IconSheet(f'{ahlcg2040.assets_dir}/faction_icons.bin', 24, 6 * 2)
