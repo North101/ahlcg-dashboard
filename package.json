@@ -1,21 +1,52 @@
 {
-    "version": "0.1",
-    "urls": [
-        ["ahlcg2040/assets/faction_icons.bin", "github:North101/ahlcg2040/ahlcg2040/assets/faction_icons.bin"],
-        ["ahlcg2040/assets/investigator.bin", "github:North101/ahlcg2040/ahlcg2040/assets/investigator.bin"],
-        ["ahlcg2040/assets/number_icons.bin", "github:North101/ahlcg2040/ahlcg2040/assets/number_icons.bin"],
-        ["ahlcg2040/assets/stat_icons.bin", "github:North101/ahlcg2040/ahlcg2040/assets/stat_icons.bin"],
-        ["ahlcg2040/widgets/__init__.py", "github:North101/ahlcg2040/ahlcg2040/widgets/__init__.py"],
-        ["ahlcg2040/widgets/app.py", "github:North101/ahlcg2040/ahlcg2040/widgets/app.py"],
-        ["ahlcg2040/widgets/faction_tab.py", "github:North101/ahlcg2040/ahlcg2040/widgets/faction_tab.py"],
-        ["ahlcg2040/widgets/investigator_item.py", "github:North101/ahlcg2040/ahlcg2040/widgets/investigator_item.py"],
-        ["ahlcg2040/widgets/investigator_screen.py", "github:North101/ahlcg2040/ahlcg2040/widgets/investigator_screen.py"],
-        ["ahlcg2040/widgets/stat.py", "github:North101/ahlcg2040/ahlcg2040/widgets/stat.py"],
-        ["ahlcg2040/widgets/stats_screen.py", "github:North101/ahlcg2040/ahlcg2040/widgets/stats_screen.py"],
-        ["ahlcg2040/__init__.py", "github:North101/ahlcg2040/ahlcg2040/__init__.py"],
-        ["ahlcg2040/data.py", "github:North101/ahlcg2040/ahlcg2040/data.py"]
+  "version": "0.1",
+  "repository": "github:North101/ahlcg2040",
+  "urls": [
+    [
+      "ahlcg2040/__init__.py",
+      "github:North101/ahlcg2040/src/__init__.py"
     ],
-    "deps": [
-        ["github:North101/badger_ui", "master"]
+    [
+      "ahlcg2040/__main__.py",
+      "github:North101/ahlcg2040/src/__main__.py"
+    ],
+    [
+      "ahlcg2040/data.py",
+      "github:North101/ahlcg2040/src/data.py"
+    ],
+    [
+      "ahlcg2040/widgets/investigator_screen.py",
+      "github:North101/ahlcg2040/src/widgets/investigator_screen.py"
+    ],
+    [
+      "ahlcg2040/widgets/faction_tab.py",
+      "github:North101/ahlcg2040/src/widgets/faction_tab.py"
+    ],
+    [
+      "ahlcg2040/widgets/stats_screen.py",
+      "github:North101/ahlcg2040/src/widgets/stats_screen.py"
+    ],
+    [
+      "ahlcg2040/widgets/__init__.py",
+      "github:North101/ahlcg2040/src/widgets/__init__.py"
+    ],
+    [
+      "ahlcg2040/widgets/investigator_item.py",
+      "github:North101/ahlcg2040/src/widgets/investigator_item.py"
+    ],
+    [
+      "ahlcg2040/widgets/stat.py",
+      "github:North101/ahlcg2040/src/widgets/stat.py"
+    ],
+    [
+      "ahlcg2040/widgets/app.py",
+      "github:North101/ahlcg2040/src/widgets/app.py"
     ]
+  ],
+  "deps": [
+    [
+      "github:North101/badger_ui",
+      "master"
+    ]
+  ]
 }

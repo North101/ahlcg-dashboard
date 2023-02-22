@@ -1,4 +1,4 @@
-import badger2040
+import badger2040w
 from ahlcg2040.data import Investigator, Stats
 from badger_ui import App, Offset, Size, Widget
 
@@ -22,19 +22,19 @@ class StatsScreen(Widget):
   def on_button(self, app: App, pressed: dict[int, bool]) -> bool:
     from .investigator_screen import InvestigatorScreen
 
-    if pressed[badger2040.BUTTON_A]:
+    if pressed[badger2040w.BUTTON_A]:
       self.selected_index = (self.selected_index - 1) % len(self.investigator.stats)
       return True
 
-    elif pressed[badger2040.BUTTON_B]:
+    elif pressed[badger2040w.BUTTON_B]:
       app.child = InvestigatorScreen()
       return True
 
-    elif pressed[badger2040.BUTTON_C]:
+    elif pressed[badger2040w.BUTTON_C]:
       self.selected_index = (self.selected_index + 1) % len(self.investigator.stats)
       return True
 
-    elif pressed[badger2040.BUTTON_UP]:
+    elif pressed[badger2040w.BUTTON_UP]:
       self.investigator = Investigator(
           name=self.investigator.name,
           faction=self.investigator.faction,
@@ -45,7 +45,7 @@ class StatsScreen(Widget):
       )
       return True
 
-    elif pressed[badger2040.BUTTON_DOWN]:
+    elif pressed[badger2040w.BUTTON_DOWN]:
       self.investigator = Investigator(
           name=self.investigator.name,
           faction=self.investigator.faction,
@@ -59,12 +59,12 @@ class StatsScreen(Widget):
     return super().on_button(app, pressed)
 
   def render(self, app: App, size: Size, offset: Offset):
-    app.display.pen(0)
+    app.display.set_pen(0)
     app.display.text(
         self.investigator.name,
         offset.x + ((size.width - app.display.measure_text(self.investigator.name, 0.8)) // 2),
         offset.y + (20 // 2),
-        0.8,
+        scale=0.8,
     )
     for index, value in enumerate(self.investigator.stats):
       StatWidget(

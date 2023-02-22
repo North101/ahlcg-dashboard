@@ -1,4 +1,4 @@
-import badger2040
+import badger2040w
 from ahlcg2040.data import investigator_data
 from badger_ui import App, Offset, Size, Widget
 from badger_ui.list import ListWidget
@@ -39,7 +39,7 @@ class InvestigatorScreen(Widget):
       self.create_list()
       return True
 
-    elif pressed[badger2040.BUTTON_B]:
+    elif pressed[badger2040w.BUTTON_B]:
       app.child = StatsScreen(
           investigator=self.items[self.list.selected_index],
       )

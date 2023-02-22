@@ -1,4 +1,4 @@
-import badger2040
+import badger2040w
 from ahlcg2040.data import Faction, faction_icons
 from badger_ui import App, Offset, Size, Widget
 
@@ -9,10 +9,10 @@ class FactionTab(Widget):
     self.selected_index = 0
 
   def on_button(self, app: App, pressed: dict[int, bool]):
-    if pressed[badger2040.BUTTON_A]:
+    if pressed[badger2040w.BUTTON_A]:
       self.selected_index = (self.selected_index - 1) % len(Faction.values)
       return True
-    elif pressed[badger2040.BUTTON_C]:
+    elif pressed[badger2040w.BUTTON_C]:
       self.selected_index = (self.selected_index + 1) % len(Faction.values)
       return True
 

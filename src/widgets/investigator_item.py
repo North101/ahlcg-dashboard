@@ -11,19 +11,19 @@ class InvestigatorItemWidget(Widget):
     self.selected = selected
 
   def render(self, app: App, size: Size, offset: Offset):
-    app.display.pen(0)
+    app.display.set_pen(0)
     if self.selected:
       app.display.rectangle(
           offset.x,
           offset.y,
           size.width,
-          size.height
+          size.height,
       )
-      app.display.pen(15)
-    app.display.thickness(2)
+      app.display.set_pen(15)
+    app.display.set_thickness(2)
     app.display.text(
         self.investigator.name,
         offset.x + 2,
         offset.y + (size.height // 2),
-        0.8,
+        scale=0.8,
     )
